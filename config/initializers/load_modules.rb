@@ -1,7 +1,14 @@
-def free_module_classes(module_with_classes)
+def free_module_classes(module_with_classes, what = {})
+  constants = module_with_classes.constants.uniq
 
-  constants = module_with_classes.constants
-  constants = constants.freeze
+  if what[:except]
+    constants = module_with_classes.constants - what[:except]
+  elsif what[:only]
+    constants = module_with_classes.constants & what[:only]
+  else
+    constants = module_with_classes.constants
+  end
+
   constants.each do |class_name|
     class_name = class_name.to_s
 
@@ -29,5 +36,4 @@ def free_module_classes(module_with_classes)
 end
 
 
-free_module_classes LocalBankGh
-
+free_module_classes LocalBankGh, except: [:Account, :VERSION]

@@ -1,9 +1,6 @@
 class ApplicationController < ActionController::API
-  include UserConcern
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include CanCan::ControllerAdditions
-  include ActionController::RequestForgeryProtection
-  protect_from_forgery with: :null_session
 
   respond_to :json
   before_action :authenticate_user
@@ -40,12 +37,16 @@ class ApplicationController < ActionController::API
   #
   def authenticate_user
     if request.headers['Authorization'].present?
+
       authenticate_or_request_with_http_token do |token, options|
+
         begin
           jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
 
           @current_user_id = jwt_payload['id']
-        rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
+        rescue JWT::ExpiredSignature
+          head :token_expired
+        rescue JWT::VerificationError, JWT::DecodeError
           head :unauthorized
         end
       end

@@ -1,12 +1,12 @@
 class Api::V1::UsersController < ApplicationController
   before_action :authenticate_user!
-  authorize_resource  class: "User"
+  load_and_authorize_resource class: "User"
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
   def index
     @users = User.all
-
+    authorize! :read, @users
     render json: @users
   end
 
@@ -18,9 +18,10 @@ class Api::V1::UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
-
+    @user.role_id = params[:role]
+    @user.password = params[:password]
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: @user, status: :created, location: api_v1_user_url(@user)
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -28,7 +29,10 @@ class Api::V1::UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
+    customized_user_params = user_params
+    customized_user_params[:role_id] = params[:role]
+    customized_user_params[:password] = params[:password]
+    if @user.update(customized_user_params)
       render json: @user
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -49,6 +53,6 @@ class Api::V1::UsersController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def user_params
-    params.require(:user).permit(:id, :username, :email, :password, :phone_number, :role_id, :gender, :date_of_birth)
+    params.require(:user).permit(:id, :user_name, :email, :password, :phone_number, :role_id, :gender, :date_of_birth)
   end
 end

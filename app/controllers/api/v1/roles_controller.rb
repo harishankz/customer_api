@@ -1,7 +1,7 @@
 class Api::V1::RolesController < ApplicationController
   before_action :authenticate_user!
-  authorize_resource  class: "Role"
-  before_action :set_user, only: [:show, :update, :destroy]
+  # load_and_authorize_resource  class: "Role"
+  before_action :set_role, only: [:show, :update, :destroy]
 
   # GET /roles
   def index
@@ -12,6 +12,14 @@ class Api::V1::RolesController < ApplicationController
 
   # GET /roles/1
   def show
+    render json: @role
+  end
+
+  #
+  # find
+  #
+  def find
+    @role = Role.find_by(role_name: params[:role_name])
     render json: @role
   end
 
