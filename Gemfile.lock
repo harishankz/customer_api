@@ -1,7 +1,9 @@
-PATH
-  remote: /home/ghari/Documents/assignment/local_bank_gh
+GIT
+  remote: https://github.com/harishankz/local_bank_gh.git
+  revision: d6b6d8ba8049038f073cd6053743e691078d9d14
+  branch: master
   specs:
-    local_bank_gh (0.1.1)
+    local_bank_gh (0.3.8)
       activerecord (~> 6.0, = 6.0.0)
       mysql2 (~> 0.5, >= 0.5.1)
       rails (~> 6.0, = 6.0.0)
@@ -66,9 +68,9 @@ GEM
       zeitwerk (~> 2.1, >= 2.1.8)
     bcrypt (3.1.15)
     bcrypt (3.1.15-java)
-    bootsnap (1.4.7)
+    bootsnap (1.4.8)
       msgpack (~> 1.0)
-    bootsnap (1.4.7-java)
+    bootsnap (1.4.8-java)
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
