@@ -17,18 +17,18 @@ p "Roles created"
 p "User Creation"
 manager_user = User.find_or_create_by(user_name: "manager_user_001",
                            email: "manager_user_001@gmail.com",
-                           password: 123456,
                            date_of_birth: "1992-10-02",
                            gender: "male",
                            phone_number: 9192093022,
                            role_id: manager_role.id)
+manager_user.update( password: 123456)
 
 customer_user = User.find_or_create_by(user_name: "customer_user_001",
                            email: "customer_user_001@gmail.com",
-                           password: 123456,
                            date_of_birth: "1992-10-02",
                            gender: "male",
                            phone_number: 9192093022,
                            role_id: customer_role.id)
+customer_user.update( password: 123456)
 
 p "User creation done..."
